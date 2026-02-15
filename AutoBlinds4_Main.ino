@@ -1,28 +1,49 @@
-#include <WiFi.h>
-#include <esp_wifi.h>
+#include <Quadrant.h>
+#define QUEUE_SIZE 2
+// Create an handle for the queue
+QueueHandle_t commandQueue = NULL;
 
-void readMacAddress(){
-  uint8_t baseMac[6];
-  esp_err_t ret = esp_wifi_get_mac(WIFI_IF_STA, baseMac);
-  if (ret == ESP_OK) {
-    Serial.printf("%02x:%02x:%02x:%02x:%02x:%02x\n",
-                  baseMac[0], baseMac[1], baseMac[2],
-                  baseMac[3], baseMac[4], baseMac[5]);
-  } else {
-    Serial.println("Failed to read MAC address");
+Quadrant Q1(2, 4); 
+Quadrant Q3(5, 18);
+
+void Q1_Handler(void *command) {
+ while (1) {
+    Q1.moveTo(CLOSE45); 
+    vTaskDelay(1000);
   }
 }
 
-void setup(){
-  Serial.begin(115200);
-
-  WiFi.mode(WIFI_STA);
-  WiFi.STA.begin();
-
-  Serial.print("[DEFAULT] ESP32 Board MAC Address: ");
-  readMacAddress();
+void Q3_Handler(void *command) {
+  while (1) {
+    Q3.moveTo(OPEN90);
+    vTaskDelay(1000); 
+  }
 }
- 
-void loop(){
 
+void setup() {
+  Serial.begin(115200);
+  // Create threads
+  xTaskCreatePinnedToCore(
+    Q1_Handler,
+    "Q1Thread",
+    2000,  // Task stack
+    NULL,
+    1,
+    NULL,
+    1  // Core 1
+  );
+
+  xTaskCreatePinnedToCore(
+    Q3_Handler,
+    "Q3Thread",
+    2000,
+    NULL,
+    1,
+    NULL,
+    1
+  );
+}
+
+void loop() {
+  
 }
