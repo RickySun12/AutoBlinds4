@@ -1,26 +1,27 @@
 #include <AutoBlinds_Recv.h> 
 
-AutoBlinds_Recv::AutoBlinds_Recv(int blindsID) {
-  this->blindsID = blindsID;
-}
-
-void AutoBlinds_Recv::setData(Packet packet) {
-  this->packet.buttonNum = packet.buttonNum;
-  this->packet.numClicks = packet.numClicks;
-}
+AutoBlinds_Recv::AutoBlinds_Recv() {}
 
 void AutoBlinds_Recv::setDataFromIncoming(const uint8_t *incomingData) {
   memcpy(&packet, incomingData, sizeof(packet));
 }
 
-int AutoBlinds_Recv::getNumClicks() {
-  return packet.numClicks;
+Opperation AutoBlinds_Recv::getCommand1() {
+  return  this->packet.command1;
 }
 
-int AutoBlinds_Recv::getButtonNum() {
-  return packet.buttonNum;
+Opperation AutoBlinds_Recv::getCommand2() {
+  return this->packet.command2;
 }
 
-int AutoBlinds_Recv::getID() {
-  return blindsID;
+Opperation AutoBlinds_Recv::getCommand3() {
+  return  this->packet.command3;
+}
+
+Opperation AutoBlinds_Recv::getCommand4() {
+  return  this->packet.command4;
+}
+
+uint8_t AutoBlinds_Recv::getID() {
+  return  this->packet.blindsID;
 }

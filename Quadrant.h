@@ -4,7 +4,7 @@ static const int MIN = 500;
 static const int MAX = 2400;
 static const int SERVO_FREQ = 50; 
 
-enum Opperation {OPEN, CLOSE, CLOSE45, OPEN90};
+enum Opperation {IDLE,OPEN, CLOSE, CLOSE45, OPEN90};
 
 class Quadrant {
   public: 

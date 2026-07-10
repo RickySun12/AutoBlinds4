@@ -33,7 +33,7 @@ void Quadrant::moveTo(Opperation angle) {
       vTaskDelay(15); 
     }
   }
-  else {
+  else if (angle == OPEN90) {
     servo1.write(0);
     for (int pos = 180; pos >= 72; pos--) {
       servo2.write(pos);
